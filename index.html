@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPA with Analytics Tracking</title>
+    <script src="https://assets.adobedtm.com/08c6c96e8270/7e5a75661b90/launch-038b3d904b97-development.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .page {
+            display: none;
+            margin-top: 50px;
+        }
+        .active {
+            display: block;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1 -->
+    <div id="page1" class="page active">
+        <h1>Step 1</h1>
+        <p>Welcome to the first page of SPA</p>
+        <button id="next1" class="next-btn">Next</button>
+    </div>
+
+    <!-- Page 2 -->
+    <div id="page2" class="page">
+        <h1>Step 2</h1>
+        <p>This is the second page</p>
+        <button id="back2" class="back-btn">Back</button>
+        <button id="next2" class="next-btn">Next</button>
+    </div>
+
+    <!-- Page 3 -->
+    <div id="page3" class="page">
+        <h1>Step 3</h1>
+        <p>This is the third page</p>
+        <button id="back3" class="back-btn">Back</button>
+        <button id="confirm3" class="confirm-btn">Confirm</button>
+    </div>
+
+    <!-- Page 4 -->
+    <div id="page4" class="page">
+        <h1>Step 4</h1>
+        <p>Thank you! You've completed all steps.</p>
+        <button id="home4" class="home-btn">Back to Home</button>
+    </div>
+
+    <script>
+        // Current page tracker
+        let currentPage = 1;
+        
+        // Function to change pages
+        function goToPage(pageNumber) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the requested page
+            document.getElementById(`page${pageNumber}`).classList.add('active');
+            
+            // Track page view
+            _satellite.track('page-view', {
+                'pagename': `Step ${pageNumber}`
+            });
+            
+            // Update current page
+            currentPage = pageNumber;
+        }
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track initial page load
+            _satellite.track('page-view', {
+                'pagename': 'Step 1'
+            });
+            
+            // Button event listeners
+            document.getElementById('next1').addEventListener('click', function() {
+                _satellite.track('next-button', {
+                    'button': 'Next Button'
+                });
+                goToPage(2);
+            });
+            
+            document.getElementById('back2').addEventListener('click', function() {
+                _satellite.track('back-button', {
+                    'button': 'Back Button'
+                });
+                goToPage(1);
+            });
+            
+            document.getElementById('next2').addEventListener('click', function() {
+                _satellite.track('next-button', {
+                    'button': 'Next Button'
+                });
+                goToPage(3);
+            });
+            
+            document.getElementById('back3').addEventListener('click', function() {
+                _satellite.track('back-button', {
+                    'button': 'Back Button'
+                });
+                goToPage(2);
+            });
+            
+            document.getElementById('confirm3').addEventListener('click', function() {
+                _satellite.track('confirm-button', {
+                    'button': 'Confirm Button'
+                });
+                goToPage(4);
+            });
+            
+            document.getElementById('home4').addEventListener('click', function() {
+                _satellite.track('home-button', {
+                    'button': 'Home Button'
+                });
+                goToPage(1);
+            });
+        });
+    </script>
+</body>
+</html>
